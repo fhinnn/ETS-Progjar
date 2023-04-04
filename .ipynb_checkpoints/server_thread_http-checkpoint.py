@@ -1,21 +1,19 @@
 from socket import *
 import socket
-import time
 import threading
+import time
 import sys
 import logging
-import multiprocessing
 from http import HttpServer
 
 httpserver = HttpServer()
 
 
-class ProcessTheClient(multiprocessing.Process):
+class ProcessTheClient(threading.Thread):
 	def __init__(self, connection, address):
 		self.connection = connection
 		self.address = address
-		multiprocessing.Process.__init__(self)
-
+		threading.Thread.__init__(self)
 
 	def run(self):
 		rcv=""
@@ -47,16 +45,17 @@ class ProcessTheClient(multiprocessing.Process):
 
 
 
-class Server(multiprocessing.Process):
+class Server(threading.Thread):
 	def __init__(self):
 		self.the_clients = []
 		self.my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		multiprocessing.Process.__init__(self)
+		threading.Thread.__init__(self)
 
 	def run(self):
 		self.my_socket.bind(('0.0.0.0', 20000))
 		self.my_socket.listen(1)
+		logging.warning("Server Menyala")
 		while True:
 			self.connection, self.client_address = self.my_socket.accept()
 			logging.warning("connection from {}".format(self.client_address))

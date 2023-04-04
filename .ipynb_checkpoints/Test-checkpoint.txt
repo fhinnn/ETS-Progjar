@@ -1,0 +1,11 @@
+Pengetesan menggunakan WRK
+
+- pertama install dengan   sudo apt install wrk -y
+
+- kedua jalankan wrk -c 1000 -t 100 -d 50 https://157.245.144.48:20001/
+
+c adalah jumlah koneksi yang terbuka
+t jumlah threads atau concurent request
+d adalah rentang waktu request akan dikirimkan
+
+- lalu output akan keluar setelah durasi habis
